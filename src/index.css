@@ -1,0 +1,34 @@
+:root {
+  color-scheme: dark;
+
+  /* ShelfScore is a fixed dark-brand theme, matching the logo — not a light/dark toggle. */
+  --bg-page: #0d1f14;
+  --bg-surface: #16301f;
+  --bg-surface-raised: #1d3a27;
+  --bg-surface-hover: #234630;
+
+  --text-primary: #f3ecd9;
+  --text-secondary: #b9c2ac;
+  --text-muted: #7f9077;
+
+  --border: rgba(243, 236, 217, 0.12);
+  --border-strong: rgba(243, 236, 217, 0.24);
+
+  --accent-gold: #c98500;
+  --accent-gold-strong: #e2a324;
+  --accent-sage: #6fa15a;
+  --accent-sage-light: #9ec78c;
+  --danger: #e37a6f;
+  --font-serif: Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg-page);
+  color: var(--text-primary);
+  font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+}
