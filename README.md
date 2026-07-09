@@ -44,6 +44,12 @@ Other scripts:
 - `npm run test` — run the stats module's Vitest suite
 - `npm run build` — type-check and produce a production build
 
+## Deployment
+
+Deployed on [Vercel](https://vercel.com), connected to this repo's `main` branch —
+Vercel auto-detects the Vite preset (`npm run build`, output dir `dist`) and deploys
+on every push.
+
 ## Notes
 
 - Genre is a single value per book (not multi-tag) — see the spec's Decisions section.
