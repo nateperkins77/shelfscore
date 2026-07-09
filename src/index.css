@@ -1,18 +1,23 @@
 :root {
   color-scheme: dark;
 
-  /* ShelfScore is a fixed dark-brand theme, matching the logo — not a light/dark toggle. */
-  --bg-page: #0d1f14;
-  --bg-surface: #16301f;
-  --bg-surface-raised: #1d3a27;
-  --bg-surface-hover: #234630;
+  /*
+   * ShelfScore is a fixed dark-brand theme, matching the logo — not a light/dark toggle.
+   * The background is a neutral warm-charcoal, not the logo's forest green — green is
+   * reserved for accents (nav/range-toggle active state, bar fills, the logo mark,
+   * the "score" wordmark) so it reads as a highlight, not the whole page.
+   */
+  --bg-page: #131211;
+  --bg-surface: #1c1a17;
+  --bg-surface-raised: #262320;
+  --bg-surface-hover: #302c27;
 
   --text-primary: #f3ecd9;
-  --text-secondary: #b9c2ac;
-  --text-muted: #7f9077;
+  --text-secondary: #b6b0a3;
+  --text-muted: #837d71;
 
-  --border: rgba(243, 236, 217, 0.12);
-  --border-strong: rgba(243, 236, 217, 0.24);
+  --border: rgba(243, 236, 217, 0.1);
+  --border-strong: rgba(243, 236, 217, 0.2);
 
   --accent-gold: #c98500;
   --accent-gold-strong: #e2a324;

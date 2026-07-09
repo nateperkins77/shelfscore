@@ -59,8 +59,10 @@ on every push.
   without a backend. `resolveCoverUrl()` always prefers the custom cover when present.
 - Export produces a JSON file (`{ version, exportedAt, books }`); import accepts either
   that shape or a bare array of books.
-- ShelfScore is a fixed dark-brand theme (matching the logo) rather than a light/dark
-  toggle. The chart categorical palette lives in `lib/chartPalette.ts` and was validated
+- ShelfScore is a fixed dark-brand theme rather than a light/dark toggle: a neutral
+  warm-charcoal background (not the logo's green) with forest green and gold reserved
+  as accents. All theme tokens live in `src/index.css`. The chart categorical palette
+  lives in `lib/chartPalette.ts` and was validated
   against the dark surface with the dataviz skill's six-checks script; see the comment
   there for the one accepted floor-band CVD warning and its mitigation (labels + legend
   always shipped).
