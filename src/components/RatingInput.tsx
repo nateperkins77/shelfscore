@@ -31,7 +31,15 @@ export default function RatingInput({ value, onChange }: RatingInputProps) {
   }
 
   function handlePointerDown(e: React.PointerEvent<HTMLDivElement>) {
-    e.currentTarget.setPointerCapture(e.pointerId)
+    try {
+      // Lets the drag keep tracking even if the cursor leaves the element's bounds.
+      // Purely an enhancement — some browsers throw NotFoundError here (seen for
+      // trackpad-originated pointer events, where the pointerId isn't registered as
+      // "active" yet at this point), which must not block the value from committing.
+      e.currentTarget.setPointerCapture(e.pointerId)
+    } catch {
+      // Capture failed; dragging still works, just won't track past the element edge.
+    }
     draggingRef.current = true
     setDragging(true)
     const next = valueFromPointer(e.clientX)
