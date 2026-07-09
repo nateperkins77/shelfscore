@@ -75,10 +75,11 @@ export default function BookDetail({ book, onSave, onDelete, onClose }: BookDeta
         Genre
         <input value={draft.genre} onChange={(e) => update('genre', e.target.value)} />
       </label>
-      <label>
+      {/* A plain div, not <label> — see the same note in AddBook.tsx. */}
+      <div className="field">
         Rating
         <RatingInput value={draft.rating} onChange={(v) => update('rating', v)} />
-      </label>
+      </div>
       <label>
         Notes
         <textarea value={draft.notes ?? ''} onChange={(e) => update('notes', e.target.value)} />

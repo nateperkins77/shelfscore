@@ -225,7 +225,8 @@ button {
   color: var(--text-primary);
 }
 
-.book-form label {
+.book-form label,
+.book-form .field {
   display: flex;
   flex-direction: column;
   gap: 0.3rem;

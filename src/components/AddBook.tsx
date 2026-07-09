@@ -146,10 +146,13 @@ export default function AddBook({ onSave }: AddBookProps) {
             placeholder="e.g. Fantasy"
           />
         </label>
-        <label>
+        {/* A plain div, not <label> — RatingInput contains a "Clear" <button>, and a
+            <label> wrapping a non-labelable slider div alongside a real button forwards
+            clicks on the slider to that button, wiping the rating right after it's set. */}
+        <div className="field">
           Rating
           <RatingInput value={form.rating} onChange={(v) => updateForm('rating', v)} />
-        </label>
+        </div>
         <label>
           Notes
           <textarea value={form.notes} onChange={(e) => updateForm('notes', e.target.value)} />
