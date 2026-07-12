@@ -1,4 +1,4 @@
-# ShelfScore
+# ReadScore
 
 Personal, single-user reading tracker. Fully client-side (React + Vite + TypeScript),
 data stored in IndexedDB, book search/metadata via the [Open Library API](https://openlibrary.org/developers/api).
@@ -66,7 +66,7 @@ on every push.
   without a backend. `resolveCoverUrl()` always prefers the custom cover when present.
 - Export produces a JSON file (`{ version, exportedAt, books }`); import accepts either
   that shape or a bare array of books.
-- ShelfScore is a fixed dark-brand theme rather than a light/dark toggle: a neutral
+- ReadScore is a fixed dark-brand theme rather than a light/dark toggle: a neutral
   warm-charcoal background (not the logo's green) with forest green and gold reserved
   as accents. All theme tokens live in `src/index.css`. The chart categorical palette
   lives in `lib/chartPalette.ts` and was validated

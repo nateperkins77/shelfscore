@@ -73,7 +73,7 @@ export default function App() {
         <div className="brand">
           <Logo />
           <h1 className="brand-wordmark">
-            shelf<span className="brand-score">score</span>
+            read<span className="brand-score">score</span>
           </h1>
         </div>
         <nav className="nav-tabs">

@@ -2,7 +2,7 @@ interface LogoProps {
   size?: number
 }
 
-/** Circle-badge mark echoing the ShelfScore logo: a shelf of book spines rising into a bar chart, capped with a star. */
+/** Circle-badge mark echoing the ReadScore logo: a shelf of book spines rising into a bar chart, capped with a star. */
 export default function Logo({ size = 32 }: LogoProps) {
   return (
     <svg width={size} height={size} viewBox="0 0 48 48" className="logo-mark" aria-hidden="true">

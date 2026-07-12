@@ -1,5 +1,5 @@
 /**
- * Categorical chart palette, validated against the ShelfScore chart surface
+ * Categorical chart palette, validated against the ReadScore chart surface
  * (--bg-surface, #1c1a17) with the dataviz skill's six-checks validator: lightness
  * band, chroma floor, and contrast all PASS; worst all-pairs CVD separation is a
  * floor-band WARN (red↔aqua, ΔE 9.7), which is legal only with secondary encoding —
