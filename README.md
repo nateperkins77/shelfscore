@@ -53,11 +53,13 @@ on every push.
 ## Notes
 
 - Genre is a single value per book (not multi-tag) — see the spec's Decisions section.
-  Picked from a fixed list (`src/lib/genres.ts`) rather than freeform text, since Open
-  Library's subject tags are too noisy to use directly (e.g. "Large type books" ranking
-  ahead of the actual genre). `guessGenre()` in `lib/openLibrary.ts` does a best-effort
-  keyword match onto that fixed list from a search result's subjects and leaves it blank
-  (for manual selection) rather than guessing wrong when nothing matches.
+  Picked from a fixed list (`src/lib/genres.ts`) via `GenreInput`, rather than freeform
+  text, since Open Library's subject tags are too noisy to use directly (e.g. "Large type
+  books" ranking ahead of the actual genre). A "Custom…" option in the dropdown still
+  allows typing an arbitrary genre when the list doesn't fit. `guessGenre()` in
+  `lib/openLibrary.ts` does a best-effort keyword match onto the fixed list from a search
+  result's subjects and leaves it blank (for manual selection) rather than guessing wrong
+  when nothing matches.
 - Covers: the Open Library cover ID is stored and resolved to a URL on demand via
   `getCoverUrl`. A user-uploaded cover overrides it — stored as a resized/compressed
   JPEG data URL (`Book.customCoverData`) so it round-trips through JSON export/import

@@ -2,7 +2,7 @@ import { useState } from 'react'
 import type { Book } from '../types/book'
 import { resolveCoverUrl } from '../lib/openLibrary'
 import { fileToResizedDataUrl } from '../lib/image'
-import { GENRES } from '../lib/genres'
+import GenreInput from './GenreInput'
 import RatingInput from './RatingInput'
 
 interface BookDetailProps {
@@ -74,17 +74,7 @@ export default function BookDetail({ book, onSave, onDelete, onClose }: BookDeta
       </label>
       <label>
         Genre
-        <select value={draft.genre} onChange={(e) => update('genre', e.target.value)}>
-          <option value="">Select a genre…</option>
-          {draft.genre && !GENRES.includes(draft.genre as (typeof GENRES)[number]) && (
-            <option value={draft.genre}>{draft.genre}</option>
-          )}
-          {GENRES.map((g) => (
-            <option key={g} value={g}>
-              {g}
-            </option>
-          ))}
-        </select>
+        <GenreInput value={draft.genre} onChange={(v) => update('genre', v)} />
       </label>
       {/* A plain div, not <label> — see the same note in AddBook.tsx. */}
       <div className="field">

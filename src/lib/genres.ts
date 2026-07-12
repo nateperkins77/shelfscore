@@ -1,7 +1,11 @@
-/** Fixed, curated genre list — deliberately short rather than mirroring Open Library's noisy subject taxonomy. */
+/**
+ * Curated genre list, offered as quick picks in the genre dropdown. Deliberately
+ * short rather than mirroring Open Library's noisy subject taxonomy — the user
+ * can always type their own via the "Custom…" option in GenreInput.
+ */
 export const GENRES = [
   'Fantasy',
-  'Science Fiction',
+  'Sci-Fi',
   'LitRPG',
   'Horror',
   'Mystery & Thriller',
@@ -11,4 +15,11 @@ export const GENRES = [
   'Non-Fiction',
   'Biography & Memoir',
   'Young Adult',
+  'Classics',
+  'Poetry',
+  'Self-Help',
+  'Graphic Novel',
+  'Short Stories',
+  'Dystopian',
+  'Adventure',
 ] as const

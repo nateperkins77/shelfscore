@@ -3,7 +3,7 @@ import type { Book } from '../types/book'
 import { createBookId } from '../types/book'
 import { getCoverUrl, guessGenre, resolveCoverUrl, searchBooks, type OpenLibrarySearchResult } from '../lib/openLibrary'
 import { fileToResizedDataUrl } from '../lib/image'
-import { GENRES } from '../lib/genres'
+import GenreInput from './GenreInput'
 import RatingInput from './RatingInput'
 
 interface AddBookProps {
@@ -141,17 +141,7 @@ export default function AddBook({ onSave }: AddBookProps) {
         </label>
         <label>
           Genre
-          <select value={form.genre} onChange={(e) => updateForm('genre', e.target.value)}>
-            <option value="">Select a genre…</option>
-            {form.genre && !GENRES.includes(form.genre as (typeof GENRES)[number]) && (
-              <option value={form.genre}>{form.genre}</option>
-            )}
-            {GENRES.map((g) => (
-              <option key={g} value={g}>
-                {g}
-              </option>
-            ))}
-          </select>
+          <GenreInput value={form.genre} onChange={(v) => updateForm('genre', v)} />
         </label>
         {/* A plain div, not <label> — RatingInput contains a "Clear" <button>, and a
             <label> wrapping a non-labelable slider div alongside a real button forwards

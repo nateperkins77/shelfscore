@@ -84,7 +84,8 @@ button {
 .form-actions button,
 .skip-lookup,
 .cover-editor-actions button,
-.cover-upload-button {
+.cover-upload-button,
+.genre-input button {
   padding: 0.45rem 0.85rem;
   border-radius: 8px;
   border: 1px solid var(--border-strong);
@@ -99,7 +100,8 @@ button {
 .form-actions button:hover,
 .skip-lookup:hover,
 .cover-editor-actions button:hover,
-.cover-upload-button:hover {
+.cover-upload-button:hover,
+.genre-input button:hover {
   background: var(--bg-surface-hover);
   border-color: var(--accent-sage);
 }
@@ -235,7 +237,8 @@ button {
 }
 
 .book-form input,
-.book-form textarea {
+.book-form textarea,
+.book-form select {
   padding: 0.5rem 0.6rem;
   border: 1px solid var(--border);
   border-radius: 8px;
@@ -245,9 +248,21 @@ button {
 }
 
 .book-form input:focus,
-.book-form textarea:focus {
+.book-form textarea:focus,
+.book-form select:focus {
   outline: none;
   border-color: var(--accent-sage);
+}
+
+.genre-input {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.genre-input input {
+  flex: 1;
+  min-width: 0;
 }
 
 .form-actions {
