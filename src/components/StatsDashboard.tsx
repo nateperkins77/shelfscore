@@ -1,11 +1,11 @@
 import { useMemo, useState } from 'react'
 import type { Book } from '../types/book'
 import {
-  authorCounts,
   averageRating,
   booksOverTimeSeries,
   genreCounts,
   librarySummary,
+  mostReadAuthorsChartData,
   ratingDistribution,
   type TimeRange,
 } from '../stats/stats'
@@ -43,7 +43,7 @@ function BarList({ entries, max }: { entries: { name: string; count: number }[];
 export default function StatsDashboard({ books }: StatsDashboardProps) {
   const [range, setRange] = useState<TimeRange>('month')
 
-  const authors = useMemo(() => authorCounts(books), [books])
+  const authors = useMemo(() => mostReadAuthorsChartData(books), [books])
   const genres = useMemo(() => genreCounts(books), [books])
   const distribution = useMemo(() => ratingDistribution(books), [books])
   const avgRating = useMemo(() => averageRating(books), [books])
@@ -92,7 +92,13 @@ export default function StatsDashboard({ books }: StatsDashboardProps) {
       <div className="stats-charts-row">
         <section className="chart-card">
           <h3>Most-read authors</h3>
-          <PieChart data={authors} colors={CHART_CATEGORICAL} otherColor={CHART_OTHER} centerLabel="books" />
+          <PieChart
+            data={authors}
+            colors={CHART_CATEGORICAL}
+            otherColor={CHART_OTHER}
+            centerLabel="books"
+            maxSlices={authors.length + 1}
+          />
         </section>
 
         <section className="chart-card">

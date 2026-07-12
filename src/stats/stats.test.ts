@@ -8,6 +8,7 @@ import {
   booksOverTimeSeries,
   genreCounts,
   librarySummary,
+  mostReadAuthorsChartData,
   ratingDistribution,
 } from './stats'
 
@@ -36,6 +37,54 @@ describe('authorCounts', () => {
       { name: 'Ann Leckie', count: 2 },
       { name: 'N.K. Jemisin', count: 1 },
     ])
+  })
+})
+
+describe('mostReadAuthorsChartData', () => {
+  it('breaks out a single-book author rated 4.5+ instead of folding them into Other', () => {
+    const books = [
+      book({ author: 'Top A' }),
+      book({ author: 'Top A' }),
+      book({ author: 'Top B' }),
+      book({ author: 'Top B' }),
+      book({ author: 'Top C' }),
+      book({ author: 'Top C' }),
+      book({ author: 'Top D' }),
+      book({ author: 'Top D' }),
+      book({ author: 'Top E' }),
+      book({ author: 'Top E' }),
+      book({ author: 'One-Hit Wonder', rating: 4.75 }),
+      book({ author: 'Mediocre One-Off', rating: 3 }),
+    ]
+    const result = mostReadAuthorsChartData(books, 5)
+    expect(result).toEqual([
+      { name: 'Top A', count: 2 },
+      { name: 'Top B', count: 2 },
+      { name: 'Top C', count: 2 },
+      { name: 'Top D', count: 2 },
+      { name: 'Top E', count: 2 },
+      { name: 'One-Hit Wonder', count: 1 },
+      { name: 'Other', count: 1 },
+    ])
+  })
+
+  it('folds an unrated or sub-4.5 single-book author into Other, not its own slice', () => {
+    const books = [
+      book({ author: 'Top A' }),
+      book({ author: 'Top A' }),
+      book({ author: 'Low Rated', rating: 4 }),
+      book({ author: 'Unrated' }),
+    ]
+    const result = mostReadAuthorsChartData(books, 1)
+    expect(result).toEqual([
+      { name: 'Top A', count: 2 },
+      { name: 'Other', count: 2 },
+    ])
+  })
+
+  it('omits Other entirely when nothing is left over', () => {
+    const books = [book({ author: 'Solo Author' })]
+    expect(mostReadAuthorsChartData(books, 5)).toEqual([{ name: 'Solo Author', count: 1 }])
   })
 })
 

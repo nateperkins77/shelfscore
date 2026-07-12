@@ -21,6 +21,36 @@ export function authorCounts(books: Book[]): CountEntry[] {
   return countBy(books, (b) => b.author)
 }
 
+/**
+ * Author breakdown for the "most-read authors" chart. The top `topN` authors by
+ * book count are always shown individually. Beyond that, an author with exactly
+ * one book is normally folded into "Other" — but if that one book is rated 4.5+,
+ * it's surfaced as its own slice instead, since a single outstanding read is
+ * worth calling out rather than burying in the aggregate. Everyone else past the
+ * cutoff is folded into "Other" as usual.
+ */
+export function mostReadAuthorsChartData(books: Book[], topN = 5): CountEntry[] {
+  const counts = authorCounts(books)
+  const head = counts.slice(0, topN)
+  const rest = counts.slice(topN)
+
+  const highlighted: CountEntry[] = []
+  const otherRest: CountEntry[] = []
+  for (const entry of rest) {
+    const book = entry.count === 1 ? books.find((b) => b.author === entry.name) : undefined
+    if (book && book.rating != null && book.rating >= 4.5) {
+      highlighted.push(entry)
+    } else {
+      otherRest.push(entry)
+    }
+  }
+
+  const otherTotal = otherRest.reduce((sum, e) => sum + e.count, 0)
+  const result = [...head, ...highlighted]
+  if (otherTotal > 0) result.push({ name: 'Other', count: otherTotal })
+  return result
+}
+
 export function genreCounts(books: Book[]): CountEntry[] {
   return countBy(books, (b) => b.genre)
 }
