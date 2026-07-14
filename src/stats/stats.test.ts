@@ -7,6 +7,7 @@ import {
   booksOverTime,
   booksOverTimeSeries,
   genreCounts,
+  goalProgress,
   librarySummary,
   mostReadAuthorsChartData,
   ratingDistribution,
@@ -85,6 +86,33 @@ describe('mostReadAuthorsChartData', () => {
   it('omits Other entirely when nothing is left over', () => {
     const books = [book({ author: 'Solo Author' })]
     expect(mostReadAuthorsChartData(books, 5)).toEqual([{ name: 'Solo Author', count: 1 }])
+  })
+})
+
+describe('goalProgress', () => {
+  it('counts only books finished in the given year, against that year\'s targets', () => {
+    const books = [
+      book({ finishDate: '2026-02-01', pageCount: 300 }),
+      book({ finishDate: '2026-06-15', pageCount: 200 }),
+      book({ finishDate: '2025-12-31', pageCount: 400 }),
+      book({ pageCount: 100 }), // no finish date — not "completed"
+    ]
+    const progress = goalProgress(books, { year: 2026, booksTarget: 20, pagesTarget: 6000 }, 2026)
+    expect(progress).toEqual({ year: 2026, booksTarget: 20, booksCompleted: 2, pagesTarget: 6000, pagesCompleted: 500 })
+  })
+
+  it('leaves targets undefined when no goal is set for the year, but still counts completions', () => {
+    const books = [book({ finishDate: '2026-01-05', pageCount: 250 })]
+    const progress = goalProgress(books, undefined, 2026)
+    expect(progress.booksTarget).toBeUndefined()
+    expect(progress.pagesTarget).toBeUndefined()
+    expect(progress.booksCompleted).toBe(1)
+    expect(progress.pagesCompleted).toBe(250)
+  })
+
+  it('treats a book with no page count as contributing 0 pages, not skipping it', () => {
+    const books = [book({ finishDate: '2026-01-05' })]
+    expect(goalProgress(books, undefined, 2026).pagesCompleted).toBe(0)
   })
 })
 

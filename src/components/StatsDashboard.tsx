@@ -1,9 +1,11 @@
 import { useMemo, useState } from 'react'
 import type { Book } from '../types/book'
+import type { ReadingGoal } from '../types/goal'
 import {
   averageRating,
   booksOverTimeSeries,
   genreCounts,
+  goalProgress,
   librarySummary,
   mostReadAuthorsChartData,
   ratingDistribution,
@@ -15,6 +17,26 @@ import LineChart from './charts/LineChart'
 
 interface StatsDashboardProps {
   books: Book[]
+  goal: ReadingGoal | undefined
+  year: number
+}
+
+function GoalBar({ label, completed, target }: { label: string; completed: number; target: number }) {
+  const pct = Math.min(1, completed / target)
+  const met = completed >= target
+  return (
+    <div className="goal-bar">
+      <div className="goal-bar-header">
+        <span>{label}</span>
+        <span className={met ? 'goal-bar-met' : ''}>
+          {completed.toLocaleString()} / {target.toLocaleString()} {met && '🎉'}
+        </span>
+      </div>
+      <span className="bar-track goal-bar-track">
+        <span className="bar-fill" style={{ width: `${pct * 100}%` }} />
+      </span>
+    </div>
+  )
 }
 
 const RANGE_OPTIONS: { value: TimeRange; label: string }[] = [
@@ -40,7 +62,7 @@ function BarList({ entries, max }: { entries: { name: string; count: number }[];
   )
 }
 
-export default function StatsDashboard({ books }: StatsDashboardProps) {
+export default function StatsDashboard({ books, goal, year }: StatsDashboardProps) {
   const [range, setRange] = useState<TimeRange>('month')
 
   const authors = useMemo(() => mostReadAuthorsChartData(books), [books])
@@ -49,6 +71,7 @@ export default function StatsDashboard({ books }: StatsDashboardProps) {
   const avgRating = useMemo(() => averageRating(books), [books])
   const overTime = useMemo(() => booksOverTimeSeries(books, range), [books, range])
   const summary = useMemo(() => librarySummary(books), [books])
+  const progress = useMemo(() => goalProgress(books, goal, year), [books, goal, year])
 
   const maxDistCount = Math.max(1, ...distribution.map((d) => d.count))
 
@@ -88,6 +111,20 @@ export default function StatsDashboard({ books }: StatsDashboardProps) {
           </div>
         )}
       </div>
+
+      {(progress.booksTarget != null || progress.pagesTarget != null) && (
+        <section className="chart-card">
+          <h3>{year} reading goal</h3>
+          <div className="goal-bars">
+            {progress.booksTarget != null && (
+              <GoalBar label="Books" completed={progress.booksCompleted} target={progress.booksTarget} />
+            )}
+            {progress.pagesTarget != null && (
+              <GoalBar label="Pages" completed={progress.pagesCompleted} target={progress.pagesTarget} />
+            )}
+          </div>
+        </section>
+      )}
 
       <div className="stats-charts-row">
         <section className="chart-card">

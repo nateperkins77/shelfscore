@@ -9,24 +9,27 @@ See [book-tracker-spec.md](../book-tracker-spec.md) (or wherever you keep the sp
 ```
 src/
   types/book.ts        Book data model (single primary genre — see spec decision)
-  lib/db.ts             IndexedDB wrapper (get/save/delete/export/import)
+  types/goal.ts         Reading goal data model — one row per calendar year, keyed by year
+  lib/db.ts             IndexedDB wrapper (get/save/delete/export/import; books + goals stores)
   lib/openLibrary.ts    Open Library search + cover URL helpers
   lib/image.ts           Resizes an uploaded cover image to a compressed JPEG data URL
   lib/chartPalette.ts    Categorical chart palette, validated for the dark surface
   stats/stats.ts        Pure stats functions (author/genre counts, rating distribution,
-                         averages, books-over-time series, summary) — kept separate from
-                         UI so it's easy to test and extend
+                         averages, books-over-time series, summary, goal progress) — kept
+                         separate from UI so it's easy to test and extend
   stats/stats.test.ts   Vitest tests for the stats module
   components/
     AddBook.tsx          Search → pick result → editable form, or manual entry
     Library.tsx          Sortable/filterable grid of all books
     BookDetail.tsx        View/edit/delete a single book
-    StatsDashboard.tsx    Renders the stats module's output as tiles + charts
+    StatsDashboard.tsx    Renders the stats module's output as tiles + charts, plus this
+                          year's goal progress bars if a goal is set
+    Goals.tsx             Set this year's books/pages target (either, both, or neither)
     RatingInput.tsx       Click/drag directly on the stars, 0.25-star increments
     Logo.tsx               Inline SVG brand mark
     charts/PieChart.tsx    Donut chart (authors/genres), legend + hover tooltip
     charts/LineChart.tsx   Books-read-over-time line chart, crosshair + tooltip
-  App.tsx                Top-level view state (library/add/detail/stats), wires
+  App.tsx                Top-level view state (library/add/detail/stats/goals), wires
                           components to the IndexedDB layer
 ```
 
@@ -64,8 +67,17 @@ on every push.
   `getCoverUrl`. A user-uploaded cover overrides it — stored as a resized/compressed
   JPEG data URL (`Book.customCoverData`) so it round-trips through JSON export/import
   without a backend. `resolveCoverUrl()` always prefers the custom cover when present.
-- Export produces a JSON file (`{ version, exportedAt, books }`); import accepts either
-  that shape or a bare array of books.
+- Export produces a JSON file (`{ version, exportedAt, books, goals }`); import accepts
+  either that shape or a bare array of books (older exports without a `goals` field import
+  with no goals, rather than failing).
+- **Reading goals are per calendar year, one row per year** (`ReadingGoal`, keyed by
+  `year` in IndexedDB). The Goals tab only ever edits the current year — there's no UI for
+  past/future years yet, though old rows aren't deleted, just not surfaced. Either target
+  (books, pages) is optional independently, so you can track just one or both; leaving a
+  field blank on save clears that target rather than treating 0 as "no goal." Progress on
+  the Stats page (`goalProgress()` in `stats/stats.ts`) counts books by `finishDate` falling
+  in that year — pages sum `pageCount`, treating a missing page count as 0 rather than
+  excluding the book.
 - ReadScore is a fixed dark-brand theme rather than a light/dark toggle: a neutral
   warm-charcoal background (not the logo's green) with forest green and gold reserved
   as accents. All theme tokens live in `src/index.css`. The chart categorical palette

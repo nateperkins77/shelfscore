@@ -1,4 +1,5 @@
 import type { Book } from '../types/book'
+import type { ReadingGoal } from '../types/goal'
 
 export interface CountEntry {
   name: string
@@ -226,6 +227,26 @@ export interface LibrarySummary {
   totalPages?: number
   longestBook?: Book
   shortestBook?: Book
+}
+
+export interface GoalProgress {
+  year: number
+  booksTarget: number | undefined
+  booksCompleted: number
+  pagesTarget: number | undefined
+  pagesCompleted: number
+}
+
+/** Books/pages finished within `year` (by finishDate) against that year's goal, if one is set. */
+export function goalProgress(books: Book[], goal: ReadingGoal | undefined, year: number): GoalProgress {
+  const finishedThisYear = books.filter((b) => b.finishDate?.slice(0, 4) === String(year))
+  return {
+    year,
+    booksTarget: goal?.booksTarget,
+    booksCompleted: finishedThisYear.length,
+    pagesTarget: goal?.pagesTarget,
+    pagesCompleted: finishedThisYear.reduce((sum, b) => sum + (b.pageCount ?? 0), 0),
+  }
 }
 
 export function librarySummary(books: Book[]): LibrarySummary {
