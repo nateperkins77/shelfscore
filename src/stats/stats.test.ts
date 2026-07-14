@@ -213,6 +213,23 @@ describe('booksOverTimeSeries', () => {
     expect(series.map((p) => p.key)).toEqual(['2024-01', '2024-02', '2024-03'])
     expect(series.map((p) => p.count)).toEqual([1, 0, 1])
   })
+
+  it('ignores a year-only finishDate for the range=all month range, but still ranges over the precise ones', () => {
+    const books = [book({ finishDate: '2024-01-15' }), book({ finishDate: '2024-03-02' }), book({ finishDate: '2024' })]
+    const series = booksOverTimeSeries(books, 'all', now)
+    expect(series.map((p) => p.key)).toEqual(['2024-01', '2024-02', '2024-03'])
+    expect(series.map((p) => p.count)).toEqual([1, 0, 1]) // the year-only book isn't placeable on a month point
+  })
+
+  it('falls back to a full Jan-Dec range for range=all when every finished book is year-only precision', () => {
+    const books = [book({ finishDate: '2024' })]
+    const series = booksOverTimeSeries(books, 'all', now)
+    expect(series.map((p) => p.key)).toEqual([
+      '2024-01', '2024-02', '2024-03', '2024-04', '2024-05', '2024-06',
+      '2024-07', '2024-08', '2024-09', '2024-10', '2024-11', '2024-12',
+    ])
+    expect(series.every((p) => p.count === 0)).toBe(true)
+  })
 })
 
 describe('librarySummary', () => {

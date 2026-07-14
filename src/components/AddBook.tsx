@@ -4,6 +4,7 @@ import { createBookId } from '../types/book'
 import { getCoverUrl, guessGenre, resolveCoverUrl, searchBooks, type OpenLibrarySearchResult } from '../lib/openLibrary'
 import { fileToResizedDataUrl } from '../lib/image'
 import GenreInput from './GenreInput'
+import PartialDateInput from './PartialDateInput'
 import RatingInput from './RatingInput'
 
 interface AddBookProps {
@@ -156,11 +157,11 @@ export default function AddBook({ onSave }: AddBookProps) {
         </label>
         <label>
           Start date
-          <input type="date" value={form.startDate} onChange={(e) => updateForm('startDate', e.target.value)} />
+          <PartialDateInput value={form.startDate} onChange={(v) => updateForm('startDate', v)} />
         </label>
         <label>
           Finish date
-          <input type="date" value={form.finishDate} onChange={(e) => updateForm('finishDate', e.target.value)} />
+          <PartialDateInput value={form.finishDate} onChange={(v) => updateForm('finishDate', v)} />
         </label>
 
         <div className="form-actions">

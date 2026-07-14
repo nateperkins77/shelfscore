@@ -13,9 +13,9 @@ export interface Book {
   /** 0–5 in 0.25 increments; undefined until the user rates it. */
   rating?: number
   notes?: string
-  /** ISO date (yyyy-mm-dd) */
+  /** 'YYYY', 'YYYY-MM', or 'YYYY-MM-DD' — day and month are optional (see lib/partialDate.ts). */
   startDate?: string
-  /** ISO date (yyyy-mm-dd) */
+  /** 'YYYY', 'YYYY-MM', or 'YYYY-MM-DD' — day and month are optional, so a book can still count toward its year's reading goal even if the exact date isn't known (see lib/partialDate.ts). */
   finishDate?: string
   pageCount?: number
   publishYear?: number

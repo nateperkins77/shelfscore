@@ -198,8 +198,23 @@ export function booksOverTimeSeries(books: Book[], range: TimeRange, now: Date =
 
   if (range === 'all') {
     if (finished.length === 0) return []
-    const months = finished.map((b) => b.finishDate!.slice(0, 7)).sort()
-    return fillMonthlyRange(finished, months[0], months[months.length - 1])
+    // A year-only finishDate (e.g. '2026') can't be sliced into a 'YYYY-MM' key, so it's
+    // excluded here — falling back to Jan/Dec of its year for the range bound only if
+    // every finished book is that imprecise, so the chart still spans a sensible range
+    // instead of the malformed key breaking fillMonthlyRange's y/m parsing.
+    const withMonth = finished.filter((b) => b.finishDate!.length >= 7)
+    let startKey: string
+    let endKey: string
+    if (withMonth.length > 0) {
+      const months = withMonth.map((b) => b.finishDate!.slice(0, 7)).sort()
+      startKey = months[0]
+      endKey = months[months.length - 1]
+    } else {
+      const years = finished.map((b) => b.finishDate!.slice(0, 4)).sort()
+      startKey = `${years[0]}-01`
+      endKey = `${years[years.length - 1]}-12`
+    }
+    return fillMonthlyRange(finished, startKey, endKey)
   }
 
   if (range === 'year') {

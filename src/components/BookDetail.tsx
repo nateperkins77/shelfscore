@@ -3,6 +3,7 @@ import type { Book } from '../types/book'
 import { resolveCoverUrl } from '../lib/openLibrary'
 import { fileToResizedDataUrl } from '../lib/image'
 import GenreInput from './GenreInput'
+import PartialDateInput from './PartialDateInput'
 import RatingInput from './RatingInput'
 
 interface BookDetailProps {
@@ -87,11 +88,11 @@ export default function BookDetail({ book, onSave, onDelete, onClose }: BookDeta
       </label>
       <label>
         Start date
-        <input type="date" value={draft.startDate ?? ''} onChange={(e) => update('startDate', e.target.value)} />
+        <PartialDateInput value={draft.startDate ?? ''} onChange={(v) => update('startDate', v || undefined)} />
       </label>
       <label>
         Finish date
-        <input type="date" value={draft.finishDate ?? ''} onChange={(e) => update('finishDate', e.target.value)} />
+        <PartialDateInput value={draft.finishDate ?? ''} onChange={(v) => update('finishDate', v || undefined)} />
       </label>
 
       <div className="form-actions">

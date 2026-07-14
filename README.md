@@ -13,6 +13,8 @@ src/
   lib/db.ts             IndexedDB wrapper (get/save/delete/export/import; books + goals stores)
   lib/openLibrary.ts    Open Library search + cover URL helpers
   lib/image.ts           Resizes an uploaded cover image to a compressed JPEG data URL
+  lib/partialDate.ts     Parse/format a 'YYYY' | 'YYYY-MM' | 'YYYY-MM-DD' string to/from
+                         day/month/year parts, for PartialDateInput
   lib/chartPalette.ts    Categorical chart palette, validated for the dark surface
   stats/stats.ts        Pure stats functions (author/genre counts, rating distribution,
                          averages, books-over-time series, summary, goal progress) — kept
@@ -25,6 +27,8 @@ src/
     StatsDashboard.tsx    Renders the stats module's output as tiles + charts, plus this
                           year's goal progress bars if a goal is set
     Goals.tsx             Set this year's books/pages target (either, both, or neither)
+    PartialDateInput.tsx   Day/month/year entered as three boxes instead of a native date
+                           picker, so a finish date can be logged with only the year known
     RatingInput.tsx       Click/drag directly on the stars, 0.25-star increments
     Logo.tsx               Inline SVG brand mark
     charts/PieChart.tsx    Donut chart (authors/genres), legend + hover tooltip
@@ -78,6 +82,16 @@ on every push.
   the Stats page (`goalProgress()` in `stats/stats.ts`) counts books by `finishDate` falling
   in that year — pages sum `pageCount`, treating a missing page count as 0 rather than
   excluding the book.
+- **Start/finish dates only need as much precision as you actually know** —
+  `PartialDateInput` splits day/month/year into three boxes (day requires month, month
+  requires year — neither means anything without the field above it), and the value is
+  stored as a plain `'YYYY'`, `'YYYY-MM'`, or `'YYYY-MM-DD'` string rather than a new
+  structured type, so the existing `.slice(0, 4)`/`.slice(0, 7)` prefix checks in
+  `stats/stats.ts` keep working unchanged. This means a book only known to have finished
+  "sometime in 2026" still counts toward the 2026 goal. The one place precision does
+  matter — `booksOverTimeSeries`'s `range: 'all'`, which needs a month to place a book on
+  the line chart — falls back to a full Jan–Dec span when every finished book is year-only,
+  rather than the malformed month key breaking the range calculation.
 - ReadScore is a fixed dark-brand theme rather than a light/dark toggle: a neutral
   warm-charcoal background (not the logo's green) with forest green and gold reserved
   as accents. All theme tokens live in `src/index.css`. The chart categorical palette

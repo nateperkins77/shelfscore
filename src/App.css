@@ -265,6 +265,22 @@ button {
   min-width: 0;
 }
 
+.partial-date-input {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.partial-date-input .partial-date-day,
+.partial-date-input .partial-date-year {
+  width: 4.5rem;
+  flex: none;
+}
+
+.partial-date-input .partial-date-month {
+  flex: 1;
+  min-width: 0;
+}
+
 .form-actions {
   display: flex;
   gap: 0.5rem;
