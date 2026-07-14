@@ -210,6 +210,9 @@ button {
 
 .book-card-meta {
   margin-top: 0.3rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .book-card-rating {
